@@ -2,6 +2,7 @@ const Sequelize = require("sequelize");
 const db = require("../config/db");
 
 const Groups = require("./goodgroups");
+const Measures = require("./measures");
 
 const Products = db.define("products", {
   id: {
@@ -25,9 +26,6 @@ const Products = db.define("products", {
   description: {
     type: Sequelize.STRING,
   },
-  measure_id: {
-    type: Sequelize.STRING,
-  },
   deleted: {
     type: Sequelize.BOOLEAN,
     allowNull: false,
@@ -37,6 +35,9 @@ const Products = db.define("products", {
 
 Groups.hasMany(Products);
 Products.belongsTo(Groups);
+
+Measures.hasMany(Products);
+Products.belongsTo(Measures);
 
 Products.sync()
   .then((res) => console.log(res))
