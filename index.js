@@ -23,18 +23,13 @@ app.use(function (req, res, next) {
 });
 
 const userRouter = require("./routes/userRouter.js");
+const productRouter = require("./routes/products");
+const groupRouter = require("./routes/groups");
 
 app.use("/", userRouter);
-
-// sequelize
-//   .sync()
-//   .then(() => {
-//     app.listen(serverport, () => {
-//       console.log("API started. Port" + serverport);
-//     });
-//   })
-//   .catch((err) => console.log(err));
+app.use("/", productRouter);
+app.use("/", groupRouter);
 
 app.listen(serverport, () => {
-  console.log("API started. Port" + serverport);
+  console.log("API started.\nPort " + serverport);
 });

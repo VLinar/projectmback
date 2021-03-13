@@ -1,9 +1,6 @@
-const User = require("../models/users.js");
+const Services = require("../services/userservices");
+const Users = new Services();
 
 exports.users = async function (request, response) {
-  response.send(
-    await User.findAll({ raw: true })
-      .then((res) => res)
-      .catch((err) => err)
-  );
+  response.send(await Users.getalluser());
 };

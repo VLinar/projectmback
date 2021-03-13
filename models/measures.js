@@ -1,34 +1,21 @@
 const Sequelize = require("sequelize");
 const db = require("../config/db");
 
-const User = db.define("user", {
+const Measures = db.define("measures", {
   id: {
     type: Sequelize.INTEGER,
     autoIncrement: true,
     primaryKey: true,
     allowNull: false,
   },
-  lastname: {
-    type: Sequelize.STRING,
-    allowNull: true,
-  },
-  firstname: {
-    type: Sequelize.STRING,
-    allowNull: true,
-  },
-  login: {
-    type: Sequelize.STRING,
-    allowNull: false,
-  },
-  password: {
-    type: Sequelize.STRING,
-    allowNull: false,
-  },
+  name: { type: Sequelize.STRING, allowNull: false },
+  shortname: { type: Sequelize.STRING, allowNull: false },
+  default: { type: Sequelize.BOOLEAN, allowNull: false, defaultValue: false },
   deleted: { type: Sequelize.BOOLEAN, allowNull: false, defaultValue: false },
 });
 
-User.sync()
+Measures.sync()
   .then((res) => console.log(res))
   .catch((err) => console.log(err));
 
-module.exports = User;
+module.exports = Measures;
