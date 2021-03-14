@@ -27,8 +27,8 @@ const User = db.define("user", {
   deleted: { type: Sequelize.BOOLEAN, allowNull: false, defaultValue: false },
 });
 
-User.sync()
-  .then((res) => console.log(res))
-  .catch((err) => console.log(err));
+// User.sync()
+//   .then((res) => console.log(res))
+//   .catch((err) => console.log(err));
 
 module.exports = User;

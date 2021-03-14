@@ -14,8 +14,4 @@ const Groups = db.define("groups", {
   deleted: { type: Sequelize.BOOLEAN, allowNull: false },
 });
 
-Groups.sync()
-  .then((res) => console.log(res))
-  .catch((err) => console.log(err));
-
 module.exports = Groups;

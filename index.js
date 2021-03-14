@@ -25,10 +25,21 @@ app.use(function (req, res, next) {
 const userRouter = require("./routes/userRouter.js");
 const productRouter = require("./routes/products");
 const groupRouter = require("./routes/groups");
+const goodsattrRouter = require("./routes/goodsattributes");
+const attrRouter = require("./routes/attributes");
+const attrValueRouter = require("./routes/attrvalues");
 
 app.use("/", userRouter);
-app.use("/", productRouter);
 app.use("/", groupRouter);
+app.use("/", productRouter);
+app.use("/", attrRouter);
+app.use("/", goodsattrRouter);
+app.use("/", attrValueRouter);
+
+sequelize
+  .sync()
+  .then((result) => console.log(result.modelManager.models))
+  .catch((err) => console.log(err));
 
 app.listen(serverport, () => {
   console.log("API started.\nPort " + serverport);

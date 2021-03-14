@@ -39,8 +39,4 @@ Products.belongsTo(Groups);
 Measures.hasMany(Products);
 Products.belongsTo(Measures);
 
-Products.sync()
-  .then((res) => console.log(res))
-  .catch((err) => console.log(err));
-
 module.exports = Products;

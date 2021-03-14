@@ -2,6 +2,8 @@ const Sequelize = require("sequelize");
 const db = require("../config/db");
 
 const Products = require("./products");
+const AttributesValue = require("./attributesvalues");
+const Atributes = require("./attributes");
 
 const Goodattributes = db.define("goodattributes", {
   id: {
@@ -12,11 +14,13 @@ const Goodattributes = db.define("goodattributes", {
   },
 });
 
-Products.hasMany(Goodattributes);
-Goodattributes.belongsTo(Products);
+AttributesValue.hasMany(Goodattributes);
+Goodattributes.belongsTo(AttributesValue);
 
-Goodattributes.sync()
-  .then((res) => console.log(res))
-  .catch((err) => console.log(err));
+Atributes.hasMany(Goodattributes);
+Goodattributes.belongsTo(Atributes);
+
+Products.hasMany(Goodattributes, { as: "Huita" });
+Goodattributes.belongsTo(Products);
 
 module.exports = Goodattributes;

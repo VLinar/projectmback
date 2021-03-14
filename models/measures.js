@@ -14,8 +14,4 @@ const Measures = db.define("measures", {
   deleted: { type: Sequelize.BOOLEAN, allowNull: false, defaultValue: false },
 });
 
-Measures.sync()
-  .then((res) => console.log(res))
-  .catch((err) => console.log(err));
-
 module.exports = Measures;
