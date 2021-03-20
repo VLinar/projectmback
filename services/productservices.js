@@ -24,14 +24,21 @@ module.exports = class Productservices {
           console.log(1);
           Promise.all(
             res.map(async (el) => {
+              let newmass = [];
               let id = el.params.map((e) => {
                 return e.atributeId;
               });
-              let ad = {
-                name: await Attributes.findByPk(1).then((r) => r.name),
-              };
 
-              el.setDataValue("paramsvalue", ad);
+              for (let i = 0; i < id.length; i++) {
+                newmass.push({
+                  name: await Attributes.findByPk(id[i]).then((r) => r.name),
+                  value: await Attributesvalue.findByPk(id[i]).then(
+                    (r) => r.value
+                  ),
+                });
+              }
+
+              el.setDataValue("paramsvalue", newmass);
 
               return el;
             })
