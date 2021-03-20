@@ -20,7 +20,7 @@ Goodattributes.belongsTo(AttributesValue);
 Atributes.hasMany(Goodattributes);
 Goodattributes.belongsTo(Atributes);
 
-Products.hasMany(Goodattributes, { as: "Huita" });
+Products.hasMany(Goodattributes, { as: "params" });
 Goodattributes.belongsTo(Products);
 
 module.exports = Goodattributes;
