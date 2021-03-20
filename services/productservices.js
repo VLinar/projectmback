@@ -20,28 +20,48 @@ module.exports = class Productservices {
       ],
     })
       .then((res) => {
-        console.log(res);
-
-        return new Promise((resolve, reject) => {
-          let newmass = [];
-
-          res.map((elem) => {
-            let test = elem.params.map((el) => {
-              el.dataValues = {
-                name: "opa",
-                value: "test",
+        return new Promise(async (resolve) => {
+          console.log(1);
+          Promise.all(
+            res.map(async (el) => {
+              let id = el.params.map((e) => {
+                return e.atributeId;
+              });
+              let ad = {
+                name: await Attributes.findByPk(1).then((r) => r.name),
               };
+
+              el.setDataValue("paramsvalue", ad);
+
               return el;
-            });
-            elem.params = test;
-
-            newmass.push(elem);
+            })
+          ).then(() => {
+            resolve(res);
           });
-
-          resolve(newmass);
+        }).then((data) => {
+          console.log(2);
+          return data;
         });
+        //   res.map(async (prod) => {
+        //     Promise.all(
+        //       await prod.params.map(async (el) => {
+        //         el = {
+        //           name: await Attributes.findByPk(el.atributeId).then(
+        //             (resp) => resp.name
+        //           ),
+        //         };
+        //         return el;
+        //       })
+        //     ).then((data) => {
+        //       prod.setDataValue("paramsvalue", data);
+        //       return prod;
+        //     });
+        //   });
+
+        //   return res;
       })
       .catch((err) => {
+        console.log(err);
         return {
           status: "error",
           error_text: err,
