@@ -28,6 +28,10 @@ const groupRouter = require("./routes/groups");
 const goodsattrRouter = require("./routes/goodsattributes");
 const attrRouter = require("./routes/attributes");
 const attrValueRouter = require("./routes/attrvalues");
+const deliveryRouter = require("./routes/delivery");
+const paymentRouter = require("./routes/payment");
+const statusRouter = require("./routes/statuses");
+const roleRouter = require("./routes/roles");
 
 app.use("/", userRouter);
 app.use("/", groupRouter);
@@ -35,6 +39,10 @@ app.use("/", productRouter);
 app.use("/", attrRouter);
 app.use("/", goodsattrRouter);
 app.use("/", attrValueRouter);
+app.use("/", deliveryRouter);
+app.use("/", paymentRouter);
+app.use("/", statusRouter);
+app.use("/", roleRouter);
 
 sequelize
   .sync()
