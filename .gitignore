@@ -2,6 +2,11 @@
 node_modules
 /dist
 
+bd.xml
+/bd.xml
+BDrodM.jsp
+/BDrodM.jsp
+
 
 # local env files
 .env

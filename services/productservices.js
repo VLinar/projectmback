@@ -21,7 +21,6 @@ module.exports = class Productservices {
     })
       .then((res) => {
         return new Promise(async (resolve) => {
-          console.log(1);
           Promise.all(
             res.map(async (el) => {
               let newmass = [];
@@ -46,26 +45,8 @@ module.exports = class Productservices {
             resolve(res);
           });
         }).then((data) => {
-          console.log(2);
           return data;
         });
-        //   res.map(async (prod) => {
-        //     Promise.all(
-        //       await prod.params.map(async (el) => {
-        //         el = {
-        //           name: await Attributes.findByPk(el.atributeId).then(
-        //             (resp) => resp.name
-        //           ),
-        //         };
-        //         return el;
-        //       })
-        //     ).then((data) => {
-        //       prod.setDataValue("paramsvalue", data);
-        //       return prod;
-        //     });
-        //   });
-
-        //   return res;
       })
       .catch((err) => {
         console.log(err);
