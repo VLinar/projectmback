@@ -8,3 +8,7 @@ exports.users = async function (request, response) {
 exports.oneusers = async function (request, response) {
   response.send(await Users.getoneusers(request.params.id));
 };
+
+exports.updateuser = async function (request, response) {
+  response.send(await Users.updateusers(request.params.id, request.body));
+};
