@@ -33,13 +33,13 @@ const User = db.define("user", {
   created: {
     type: Sequelize.DATE,
     allowNull: false,
-},
+  },
+  roleId: {
+    type: Sequelize.INTEGER,
+    allowNull: false,
+  },
   deleted: { type: Sequelize.BOOLEAN, allowNull: false, defaultValue: false },
 });
-
-// User.sync()
-//   .then((res) => console.log(res))
-//   .catch((err) => console.log(err));
 
 Role.hasMany(User);
 User.belongsTo(Role);
