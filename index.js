@@ -32,6 +32,8 @@ const deliveryRouter = require("./routes/delivery");
 const paymentRouter = require("./routes/payment");
 const statusRouter = require("./routes/statuses");
 const roleRouter = require("./routes/roles");
+//404 ошибка при обращении к неизвестному пути
+const errorRouter = require("./routes/404error");
 
 app.use("/", userRouter);
 app.use("/", groupRouter);
@@ -43,6 +45,8 @@ app.use("/", deliveryRouter);
 app.use("/", paymentRouter);
 app.use("/", statusRouter);
 app.use("/", roleRouter);
+
+app.use("/", errorRouter);
 
 sequelize
   .sync()
