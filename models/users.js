@@ -26,14 +26,6 @@ const User = db.define("user", {
     type: Sequelize.STRING,
     allowNull: false,
   },
-  updated: {
-    type: Sequelize.DATE,
-    allowNull: false,
-  },
-  created: {
-    type: Sequelize.DATE,
-    allowNull: false,
-  },
   roleId: {
     type: Sequelize.INTEGER,
     allowNull: false,

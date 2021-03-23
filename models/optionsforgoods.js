@@ -5,20 +5,12 @@ const Optionattributevalues = require("./optionattributevalues");
 const Optionattributes = require("./optionattributes");
 
 const Optionforgoods = db.define("optionforgoods", {
-    id: {
-      type: Sequelize.INTEGER,
-      autoIncrement: true,
-      primaryKey: true,
-      allowNull: false,
-    },
-    updated: {
-        type: Sequelize.DATE,
-        allowNull: false,
-    },
-    created: {
-        type: Sequelize.DATE,
-        allowNull: false,
-    },
+  id: {
+    type: Sequelize.INTEGER,
+    autoIncrement: true,
+    primaryKey: true,
+    allowNull: false,
+  },
 });
 
 Optionattributevalues.hasMany(Optionforgoods);
