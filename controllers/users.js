@@ -12,3 +12,11 @@ exports.oneusers = async function (request, response) {
 exports.updateuser = async function (request, response) {
   response.send(await Users.updateusers(request.params.id, request.body));
 };
+
+exports.createusers = async function (request, response) {
+  response.send(await Users.createusers(request.body));
+};
+
+exports.deleteusers = async function (request, response) {
+  response.send(await Users.delusers(request.params.id));
+};

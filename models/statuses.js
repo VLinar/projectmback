@@ -10,7 +10,12 @@ const Statuses = db.define("statuses", {
   },
   name: {
     type: Sequelize.STRING,
-    allowNull: true,
+    allowNull: false,
+    validate: {
+      notEmpty: {
+        msg: "Поле name не может быть пустым",
+      },
+    },
   },
   color: {
     type: Sequelize.STRING,
@@ -25,6 +30,13 @@ const Statuses = db.define("statuses", {
     type: Sequelize.BOOLEAN,
     allowNull: false,
     defaultValue: false,
+    validate: {
+      isEven(value) {
+        if (typeof value !== "boolean") {
+          throw new Error("Поле deleted должно быть boolean");
+        }
+      },
+    },
   },
 });
 
