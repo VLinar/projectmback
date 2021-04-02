@@ -19,34 +19,8 @@ module.exports = class Productservices {
         },
       ],
     })
-      .then((res) => {
-        return new Promise(async (resolve) => {
-          Promise.all(
-            res.map(async (el) => {
-              let newmass = [];
-              let id = el.params.map((e) => {
-                return e.atributeId;
-              });
-
-              for (let i = 0; i < id.length; i++) {
-                newmass.push({
-                  name: await Attributes.findByPk(id[i]).then((r) => r.name),
-                  value: await Attributesvalue.findByPk(id[i]).then(
-                    (r) => r.value
-                  ),
-                });
-              }
-
-              el.setDataValue("paramsvalue", newmass);
-
-              return el;
-            })
-          ).then(() => {
-            resolve(res);
-          });
-        }).then((data) => {
-          return data;
-        });
+      .then(async (res) => {
+        return await this.getAttrGoods(res);
       })
       .catch((err) => {
         console.log(err);
@@ -55,5 +29,46 @@ module.exports = class Productservices {
           error_text: err,
         };
       });
+  };
+  getlimits = (limitvalue) => {
+    return Products.findAll({
+      include: [
+        { model: Groups },
+        { model: Measures },
+        {
+          model: GoodsAttr,
+          as: "params",
+          attributes: ["attrvalueId", "atributeId"],
+        },
+      ],
+      limit: limitvalue,
+    })
+      .then(async (res) => {
+        return await this.getAttrGoods(res);
+      })
+      .catch((err) => err);
+  };
+  // Метод для слияния атрибутов в основной объект
+  getAttrGoods = async (obj) => {
+    return Promise.all(
+      obj.map(async (el) => {
+        let newmass = [];
+
+        for (let i = 0; i < el.params.length; i++) {
+          newmass.push({
+            name: await Attributes.findByPk(el.params[i].atributeId).then(
+              (r) => r.name
+            ),
+            value: await Attributesvalue.findByPk(
+              el.params[i].attrvalueId
+            ).then((r) => r.value),
+          });
+        }
+
+        el.setDataValue("paramsvalue", newmass);
+
+        return el;
+      })
+    );
   };
 };

@@ -2,5 +2,7 @@ const Services = require("../services/productservices");
 const Products = new Services();
 
 exports.products = async function (request, response) {
-  response.send(await Products.getallproducts());
+  request.query.limit
+    ? response.send(await Products.getlimits(request.query.limit))
+    : response.send(await Products.getallproducts());
 };

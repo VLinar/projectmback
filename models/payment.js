@@ -10,7 +10,7 @@ const Payment = db.define("payment", {
   },
   name: {
     type: Sequelize.STRING,
-    allowNull: true,
+    allowNull: false,
   },
   deleted: {
     type: Sequelize.BOOLEAN,
