@@ -12,10 +12,6 @@ const Payment = db.define("payment", {
     type: Sequelize.STRING,
     allowNull: true,
   },
-  status: {
-    type: Sequelize.INTEGER,
-    allowNull: true,
-  },
   deleted: {
     type: Sequelize.BOOLEAN,
     allowNull: false,

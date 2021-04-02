@@ -24,7 +24,7 @@ const User = db.define("user", {
     allowNull: false,
     validate: {
       isEmail: {
-        msg: "Не валидное поле",
+        msg: "Не валидное значение поля email",
       },
       notEmpty: {
         msg: "Поле password не может быть пустым",

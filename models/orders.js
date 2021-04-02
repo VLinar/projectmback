@@ -25,6 +25,11 @@ const Orders = db.define("orders", {
     type: Sequelize.DOUBLE,
     allowNull: true,
   },
+  paid: {
+    type: Sequelize.BOOLEAN,
+    allowNull: false,
+    defaultValue: false,
+  },
   deleted: {
     type: Sequelize.BOOLEAN,
     allowNull: false,

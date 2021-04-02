@@ -16,10 +16,6 @@ const Delivery = db.define("delivery", {
     type: Sequelize.INTEGER,
     allowNull: true,
   },
-  status: {
-    type: Sequelize.INTEGER,
-    allowNull: true,
-  },
   deleted: {
     type: Sequelize.BOOLEAN,
     allowNull: false,
