@@ -7,7 +7,23 @@ const Attributes = require("../models/attributes");
 const Attributesvalue = require("../models/attributesvalues");
 
 module.exports = class Productservices {
-  getallproducts = async () => {
+  getallproducts = (limits, pages, order_by) => {
+    if (!limits) {
+      limits = 250;
+    }
+    if (!pages) {
+      pages = 1;
+    }
+    if (!order_by) {
+      order_by = "ASC";
+    }
+
+    const page = parseInt(pages);
+    const limit = parseInt(limits);
+
+    const startIndex = (page - 1) * limit;
+    const endIndex = page * limit;
+
     return Products.findAll({
       include: [
         { model: Groups },
@@ -18,36 +34,38 @@ module.exports = class Productservices {
           attributes: ["attrvalueId", "atributeId"],
         },
       ],
+      order: [["name", order_by]],
+      offset: startIndex,
+      limit: endIndex,
     })
       .then(async (res) => {
-        return await this.getAttrGoods(res);
+        let result = await this.getAttrGoods(res);
+        return {
+          status: "success",
+          result: result,
+        };
       })
       .catch((err) => {
-        console.log(err);
-        return {
-          status: "error",
-          error_text: err,
-        };
+        if (err.parent.code === "42703") {
+          return {
+            status: err.parent.routine,
+            error: "Поле(я) содержат некорректные значения",
+          };
+        }
       });
   };
-  getlimits = (limitvalue) => {
-    return Products.findAll({
-      include: [
-        { model: Groups },
-        { model: Measures },
-        {
-          model: GoodsAttr,
-          as: "params",
-          attributes: ["attrvalueId", "atributeId"],
-        },
-      ],
-      limit: limitvalue,
-    })
-      .then(async (res) => {
-        return await this.getAttrGoods(res);
+
+  getproductscount = () => {
+    return Products.count()
+      .then((res) => {
+        return {
+          status: "success",
+          count: res,
+        };
       })
       .catch((err) => err);
   };
+
   // Метод для слияния атрибутов в основной объект
   getAttrGoods = async (obj) => {
     return Promise.all(
