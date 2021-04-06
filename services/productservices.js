@@ -4,6 +4,7 @@ const Groups = require("../models/goodgroups.js");
 
 const GoodsAttr = require("../models/goodsattr");
 const Attributes = require("../models/attributes");
+const Images = require("../models/image");
 const Attributesvalue = require("../models/attributesvalues");
 
 module.exports = class Productservices {
@@ -28,6 +29,7 @@ module.exports = class Productservices {
       include: [
         { model: Groups },
         { model: Measures },
+        { model: Images },
         {
           model: GoodsAttr,
           as: "params",
