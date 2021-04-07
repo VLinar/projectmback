@@ -2,25 +2,15 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const app = express();
 
+const authmiddleware = require("./middleware/auth");
+
 const sequelize = require("./config/db.js");
 const serverport = 3012;
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.use(function (req, res, next) {
-  res.setHeader(
-    "Access-Control-Allow-Headers",
-    "X-Requested-With,content-type"
-  );
-  res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader(
-    "Access-Control-Allow-Methods",
-    "GET, POST, OPTIONS, PUT, PATCH, DELETE"
-  );
-  res.setHeader("Access-Control-Allow-Credentials", true);
-  next();
-});
+const authRouter = require("./routes/authRouter.js");
 
 const userRouter = require("./routes/userRouter.js");
 const productRouter = require("./routes/products");
@@ -35,6 +25,10 @@ const roleRouter = require("./routes/roles");
 //404 ошибка при обращении к неизвестному пути
 const errorRouter = require("./routes/404error");
 
+app.use(authmiddleware);
+
+app.use("/", authRouter);
+
 app.use("/", userRouter);
 app.use("/", groupRouter);
 app.use("/", productRouter);
@@ -46,7 +40,7 @@ app.use("/", paymentRouter);
 app.use("/", statusRouter);
 app.use("/", roleRouter);
 
-app.use("/", errorRouter);
+// app.use("/", errorRouter);
 
 sequelize
   .sync()

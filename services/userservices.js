@@ -1,12 +1,22 @@
 const User = require("../models/users.js");
 
 module.exports = class Userservices {
-  getalluser = async () => {
+  getfindusers = async (login, pass) => {
+    return User.findOne({
+      where: {
+        email: login,
+        password: pass,
+      },
+    })
+      .then((res) => res)
+      .catch((err) => err);
+  };
+  getalluser = () => {
     return User.findAll()
       .then((res) => res)
       .catch((err) => err);
   };
-  getoneusers = async (userid) => {
+  getoneusers = (userid) => {
     return User.findByPk(userid)
       .then((res) => res)
       .catch((err) => err);
