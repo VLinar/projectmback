@@ -12,8 +12,8 @@ exports.login = async function (request, response) {
       if (res) {
         response.status(200).json({
           id: res.id,
-          login: res.login,
-          token: jwt.sign({ id: res.id }, tokenKey),
+          login: res.email,
+          token: jwt.sign({ id: res.id, role: res.roleId }, tokenKey),
         });
       }
       response.status(404).json({ message: "User not found" });
