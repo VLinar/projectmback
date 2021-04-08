@@ -3,6 +3,7 @@ const bodyParser = require("body-parser");
 const app = express();
 
 const authmiddleware = require("./middleware/auth");
+const checkauthmiddlewear = require("./middleware/checkauth");
 
 const sequelize = require("./config/db.js");
 const serverport = 3012;
@@ -29,18 +30,18 @@ app.use(authmiddleware);
 
 app.use("/", authRouter);
 
-app.use("/", userRouter);
-app.use("/", groupRouter);
-app.use("/", productRouter);
-app.use("/", attrRouter);
-app.use("/", goodsattrRouter);
-app.use("/", attrValueRouter);
-app.use("/", deliveryRouter);
-app.use("/", paymentRouter);
-app.use("/", statusRouter);
-app.use("/", roleRouter);
+app.use("/", checkauthmiddlewear, userRouter);
+app.use("/", checkauthmiddlewear, groupRouter);
+app.use("/", checkauthmiddlewear, productRouter);
+app.use("/", checkauthmiddlewear, attrRouter);
+app.use("/", checkauthmiddlewear, goodsattrRouter);
+app.use("/", checkauthmiddlewear, attrValueRouter);
+app.use("/", checkauthmiddlewear, deliveryRouter);
+app.use("/", checkauthmiddlewear, paymentRouter);
+app.use("/", checkauthmiddlewear, statusRouter);
+app.use("/", checkauthmiddlewear, roleRouter);
 
-// app.use("/", errorRouter);
+app.use("/", checkauthmiddlewear, errorRouter);
 
 sequelize
   .sync()

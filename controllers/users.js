@@ -2,8 +2,7 @@ const Services = require("../services/userservices");
 const Users = new Services();
 
 exports.users = async function (request, response) {
-  if (request.user) return response.send(await Users.getalluser());
-  else return response.send("xfgf[f");
+  response.send(await Users.getalluser());
 };
 
 exports.oneusers = async function (request, response) {
