@@ -5,6 +5,8 @@ const app = express();
 const authmiddleware = require("./middleware/auth");
 const checkauthmiddlewear = require("./middleware/checkauth");
 
+const cors = require("cors");
+
 const sequelize = require("./config/db.js");
 const serverport = 3012;
 
@@ -25,6 +27,8 @@ const statusRouter = require("./routes/statuses");
 const roleRouter = require("./routes/roles");
 //404 ошибка при обращении к неизвестному пути
 const errorRouter = require("./routes/404error");
+
+app.use(cors());
 
 app.use(authmiddleware);
 
