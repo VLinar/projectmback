@@ -2,25 +2,18 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const app = express();
 
+const authmiddleware = require("./middleware/auth");
+const checkauthmiddlewear = require("./middleware/checkauth");
+
+const cors = require("cors");
+
 const sequelize = require("./config/db.js");
 const serverport = 3012;
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.use(function (req, res, next) {
-  res.setHeader(
-    "Access-Control-Allow-Headers",
-    "X-Requested-With,content-type"
-  );
-  res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader(
-    "Access-Control-Allow-Methods",
-    "GET, POST, OPTIONS, PUT, PATCH, DELETE"
-  );
-  res.setHeader("Access-Control-Allow-Credentials", true);
-  next();
-});
+const authRouter = require("./routes/authRouter.js");
 
 const userRouter = require("./routes/userRouter.js");
 const productRouter = require("./routes/products");
@@ -35,18 +28,24 @@ const roleRouter = require("./routes/roles");
 //404 ошибка при обращении к неизвестному пути
 const errorRouter = require("./routes/404error");
 
-app.use("/", userRouter);
-app.use("/", groupRouter);
-app.use("/", productRouter);
-app.use("/", attrRouter);
-app.use("/", goodsattrRouter);
-app.use("/", attrValueRouter);
-app.use("/", deliveryRouter);
-app.use("/", paymentRouter);
-app.use("/", statusRouter);
-app.use("/", roleRouter);
+app.use(cors());
 
-app.use("/", errorRouter);
+app.use(authmiddleware);
+
+app.use("/", authRouter);
+
+app.use("/", checkauthmiddlewear, userRouter);
+app.use("/", checkauthmiddlewear, groupRouter);
+app.use("/", checkauthmiddlewear, productRouter);
+app.use("/", checkauthmiddlewear, attrRouter);
+app.use("/", checkauthmiddlewear, goodsattrRouter);
+app.use("/", checkauthmiddlewear, attrValueRouter);
+app.use("/", checkauthmiddlewear, deliveryRouter);
+app.use("/", checkauthmiddlewear, paymentRouter);
+app.use("/", checkauthmiddlewear, statusRouter);
+app.use("/", checkauthmiddlewear, roleRouter);
+
+app.use("/", checkauthmiddlewear, errorRouter);
 
 sequelize
   .sync()

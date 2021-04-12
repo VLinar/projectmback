@@ -31,6 +31,10 @@ const Products = db.define("products", {
     allowNull: false,
     defaultValue: false,
   },
+  amount: {
+    type: Sequelize.FLOAT,
+    defaultValue: 0,
+  },
 });
 
 Groups.hasMany(Products);
