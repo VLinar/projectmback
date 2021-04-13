@@ -51,24 +51,6 @@ module.exports = class Userservices {
   createusers = async (data) => {
     return await this.finddoubleemail(data.email)
       .then(async (response) => {
-        //   console.log(response);
-        //   if (response.id) {
-        //     return User.create(data)
-        //       .then((res) => res)
-        //       .catch((err) => {
-        //         err.errors = err.errors.map((error) => {
-        //           return {
-        //             type: error.type,
-        //             message: error.message,
-        //           };
-        //         });
-        //         return err.errors;
-        //       });
-        //   } else {
-        //     return {
-        //       msg: "Пользователь с таким Email уже существует",
-        //     };
-        //   }
         return response
           ? {
               status: "error",
