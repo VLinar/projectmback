@@ -1,6 +1,7 @@
 const Services = require("../services/userservices");
 const Users = new Services();
 const jwt = require("jsonwebtoken");
+const Mail = require("../services/mailer");
 
 require("dotenv").config();
 
@@ -25,16 +26,25 @@ exports.registrations = async (request, response) => {
   await Users.createusers(request.body)
     .then(async (res) => {
       if (res.status) {
-        response.status(409).json(res);
+        response.json(res);
       } else {
         return await Users.getfindusers(res.email, res.password)
-          .then((res) => {
+          .then(async (res) => {
             if (res) {
-              return response.status(200).json({
-                id: res.id,
-                login: res.email,
-                token: jwt.sign({ id: res.id, role: res.roleId }, tokenKey),
-              });
+              if (request.query.guest) {
+                return response.status(200).json({
+                  id: res.id,
+                  login: res.email,
+                  token: jwt.sign({ id: res.id, role: res.roleId }, tokenKey),
+                });
+              } else {
+                await Mail.send(res).then((resp) => {
+                  console.log(resp);
+                  return response
+                    .status(200)
+                    .json({ status: "success", msg: resp.accepted });
+                });
+              }
             }
             return response.status(404).json({ message: "User not found" });
           })
