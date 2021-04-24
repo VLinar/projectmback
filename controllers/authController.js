@@ -2,6 +2,7 @@ const Services = require("../services/userservices");
 const Users = new Services();
 const jwt = require("jsonwebtoken");
 const Mail = require("../services/mailer");
+const uid = require("rand-token").uid;
 
 require("dotenv").config();
 
@@ -14,7 +15,9 @@ exports.login = async (request, response) => {
         return response.status(200).json({
           id: res.id,
           login: res.email,
-          token: jwt.sign({ id: res.id, role: res.roleId }, tokenKey),
+          token: jwt.sign({ id: res.id, role: res.roleId }, tokenKey, {
+            expiresIn: "2m",
+          }),
         });
       }
       return response.status(404).json({ message: "User not found" });
@@ -35,7 +38,10 @@ exports.registrations = async (request, response) => {
                 return response.status(200).json({
                   id: res.id,
                   login: res.email,
-                  token: jwt.sign({ id: res.id, role: res.roleId }, tokenKey),
+                  token: jwt.sign({ id: res.id, role: res.roleId }, tokenKey, {
+                    expiresIn: "2m",
+                  }),
+                  refreshtoken: uid(16),
                 });
               } else {
                 await Mail.send(res).then((resp) => {
