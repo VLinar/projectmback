@@ -12,14 +12,20 @@ const tokenKey = process.env.token;
 
 exports.login = async (request, response) => {
   await Users.getfindusers(request.body.login, request.body.password)
-    .then((res) => {
+    .then(async (res) => {
       if (res) {
+        let newrefresh = uid(16);
+        await Refresh.addrefresh({
+          userId: res.id,
+          refreshtoken: newrefresh,
+        });
         return response.status(200).json({
           id: res.id,
           login: res.email,
           token: jwt.sign({ id: res.id, role: res.roleId }, tokenKey, {
             expiresIn: "2m",
           }),
+          refreshtoken: newrefresh,
         });
       }
       return response.status(404).json({ message: "User not found" });
