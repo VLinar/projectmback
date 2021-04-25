@@ -32,7 +32,6 @@ app.use(cors());
 app.use(authmiddleware);
 
 app.use("/", authRouter);
-
 app.use("/", userRouter);
 app.use("/", groupRouter);
 app.use("/", productRouter);

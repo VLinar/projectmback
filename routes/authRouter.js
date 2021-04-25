@@ -6,4 +6,6 @@ authrRouter.post("/login", authController.login);
 
 authrRouter.post("/reg", authController.registrations);
 
+authrRouter.post("/refreshtoken", authController.refresh);
+
 module.exports = authrRouter;
