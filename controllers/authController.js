@@ -2,6 +2,9 @@ const Services = require("../services/userservices");
 const Users = new Services();
 const jwt = require("jsonwebtoken");
 const Mail = require("../services/mailer");
+const uid = require("rand-token").uid;
+const Refreshservices = require("../services/refreshservices");
+const Refresh = new Refreshservices();
 
 require("dotenv").config();
 
@@ -14,7 +17,9 @@ exports.login = async (request, response) => {
         return response.status(200).json({
           id: res.id,
           login: res.email,
-          token: jwt.sign({ id: res.id, role: res.roleId }, tokenKey),
+          token: jwt.sign({ id: res.id, role: res.roleId }, tokenKey, {
+            expiresIn: "2m",
+          }),
         });
       }
       return response.status(404).json({ message: "User not found" });
@@ -32,10 +37,19 @@ exports.registrations = async (request, response) => {
           .then(async (res) => {
             if (res) {
               if (request.query.guest) {
+                let newrefresh = uid(16);
+
+                await Refresh.addrefresh({
+                  userId: res.id,
+                  refreshtoken: newrefresh,
+                });
                 return response.status(200).json({
                   id: res.id,
                   login: res.email,
-                  token: jwt.sign({ id: res.id, role: res.roleId }, tokenKey),
+                  token: jwt.sign({ id: res.id, role: res.roleId }, tokenKey, {
+                    expiresIn: "2m",
+                  }),
+                  refreshtoken: newrefresh,
                 });
               } else {
                 await Mail.send(res).then((resp) => {
@@ -50,6 +64,46 @@ exports.registrations = async (request, response) => {
           })
           .catch((err) => err);
       }
+    })
+    .catch((err) => console.log(err));
+};
+
+exports.refresh = async (request, response) => {
+  if (!request.body.refreshtoken) {
+    return response.status(400).send({
+      status: "error",
+      msg: "refreshtoken обязателен при запросе",
+    });
+  }
+  await Refresh.findrefresh(request.body.refreshtoken)
+    .then(async (res) => {
+      if (res.status === "Not Found") {
+        return response.status(404).send(res);
+      }
+      await Users.getoneusers(res.userId).then(async (resp) => {
+        let newrefresh = uid(16);
+        return await Refresh.deleterefresh(res.id)
+          .then(async (res) => {
+            return await Refresh.addrefresh({
+              userId: resp.id,
+              refreshtoken: newrefresh,
+            })
+              .then((res) => {
+                return response.status(200).json({
+                  token: jwt.sign(
+                    { id: resp.id, role: resp.roleId },
+                    tokenKey,
+                    {
+                      expiresIn: "2m",
+                    }
+                  ),
+                  refreshtoken: newrefresh,
+                });
+              })
+              .catch((err) => console.log(err));
+          })
+          .catch((err) => console.log(err));
+      });
     })
     .catch((err) => console.log(err));
 };

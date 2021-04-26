@@ -10,8 +10,9 @@ module.exports = function (req, res, next) {
       req.headers.authorization.split(" ")[1],
       tokenKey,
       async (err, payload) => {
-        if (err) next();
-        else if (payload) {
+        if (err) {
+          return res.status(401).json({ status: "error", msg: "No Auth" });
+        } else if (payload) {
           await Users.getoneusers(payload.id)
             .then((response) => {
               if (response.id) {
@@ -21,11 +22,15 @@ module.exports = function (req, res, next) {
             })
             .catch((err) => console.log(err));
         }
-
-        if (!req.user) next();
       }
     );
   } else {
-    next();
+    (req.method === "GET" && req._parsedUrl.pathname === "/groups") ||
+    (req.method === "GET" && req._parsedUrl.pathname === "/products") ||
+    (req.method === "POST" && req._parsedUrl.pathname === "/login") ||
+    (req.method === "POST" && req._parsedUrl.pathname === "/reg") ||
+    (req.method === "POST" && req._parsedUrl.pathname === "/refreshtoken")
+      ? next()
+      : res.status(401).json({ status: "error", msg: "No Auth" });
   }
 };
