@@ -29,7 +29,8 @@ module.exports = function (req, res, next) {
     (req.method === "GET" && req._parsedUrl.pathname === "/products") ||
     (req.method === "POST" && req._parsedUrl.pathname === "/login") ||
     (req.method === "POST" && req._parsedUrl.pathname === "/reg") ||
-    (req.method === "POST" && req._parsedUrl.pathname === "/refreshtoken")
+    (req.method === "POST" && req._parsedUrl.pathname === "/refreshtoken") ||
+    (req.method === "POST" && req._parsedUrl.pathname === "/guest")
       ? next()
       : res.status(401).json({ status: "error", msg: "No Auth" });
   }

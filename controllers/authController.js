@@ -42,29 +42,24 @@ exports.registrations = async (request, response) => {
         return await Users.getfindusers(res.email, res.password)
           .then(async (res) => {
             if (res) {
-              if (request.query.guest) {
-                let newrefresh = uid(16);
+              let newrefresh = uid(16);
 
-                await Refresh.addrefresh({
-                  userId: res.id,
-                  refreshtoken: newrefresh,
-                });
+              await Refresh.addrefresh({
+                userId: res.id,
+                refreshtoken: newrefresh,
+              });
+
+              await Mail.send(res).then((resp) => {
+                console.log(resp);
                 return response.status(200).json({
-                  id: res.id,
-                  login: res.email,
+                  status: "success",
+                  msg: resp.accepted,
                   token: jwt.sign({ id: res.id, role: res.roleId }, tokenKey, {
                     expiresIn: "2m",
                   }),
                   refreshtoken: newrefresh,
                 });
-              } else {
-                await Mail.send(res).then((resp) => {
-                  console.log(resp);
-                  return response
-                    .status(200)
-                    .json({ status: "success", msg: resp.accepted });
-                });
-              }
+              });
             }
             return response.status(404).json({ message: "User not found" });
           })
@@ -89,12 +84,12 @@ exports.refresh = async (request, response) => {
       await Users.getoneusers(res.userId).then(async (resp) => {
         let newrefresh = uid(16);
         return await Refresh.deleterefresh(res.id)
-          .then(async (res) => {
+          .then(async () => {
             return await Refresh.addrefresh({
               userId: resp.id,
               refreshtoken: newrefresh,
             })
-              .then((res) => {
+              .then(() => {
                 return response.status(200).json({
                   token: jwt.sign(
                     { id: resp.id, role: resp.roleId },
@@ -109,6 +104,25 @@ exports.refresh = async (request, response) => {
               .catch((err) => console.log(err));
           })
           .catch((err) => console.log(err));
+      });
+    })
+    .catch((err) => console.log(err));
+};
+
+exports.guestreg = async (request, response) => {
+  return await Users.createguestuser(request.body)
+    .then(async (res) => {
+      let newrefresh = uid(16);
+      await Refresh.addrefresh({
+        userId: res.id,
+        refreshtoken: newrefresh,
+      });
+      return response.status(200).json({
+        status: "success",
+        token: jwt.sign({ id: res.id, role: res.roleId }, tokenKey, {
+          expiresIn: "2m",
+        }),
+        refreshtoken: newrefresh,
       });
     })
     .catch((err) => console.log(err));

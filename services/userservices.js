@@ -7,6 +7,7 @@ module.exports = class Userservices {
         email: login,
         password: pass,
       },
+      order: [["createdAt", "DESC"]],
     })
       .then((res) => res)
       .catch((err) => err);
@@ -69,6 +70,19 @@ module.exports = class Userservices {
               });
       })
       .catch((err) => err);
+  };
+  createguestuser = async (data) => {
+    return User.create(data)
+      .then((res) => res)
+      .catch((err) => {
+        err.errors = err.errors.map((error) => {
+          return {
+            type: error.type,
+            message: error.message,
+          };
+        });
+        return err.errors;
+      });
   };
 
   delusers = (deleteid) => {
