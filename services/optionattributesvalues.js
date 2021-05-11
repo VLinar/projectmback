@@ -1,8 +1,8 @@
-const Attributes = require("../models/attributes");
+const Optionattributesvalues = require("../models/optionattributesvalues");
 
-module.exports = class Attr {
-  getallattributes = async () => {
-    return Attributes.findAll()
+module.exports = class Optionattributesvaluesservices {
+  getalloptionattributesvalues = async () => {
+    return Optionattributesvalues.findAll()
       .then((res) => {
         return {
           status: "success",
@@ -16,19 +16,19 @@ module.exports = class Attr {
         };
       });
   };
-  getoneattributes = (attrid) => {
-    return Attributes.findByPk(attrid)
+  getoneoptionattributesvalues = (Optionattributesvaluesid) => {
+    return Optionattributesvalues.findByPk(Optionattributesvaluesid)
       .then((res) => res)
       .catch((err) => err);
   };
-  updateattributes = (attrid, data) => {
-    return Attributes.update(data, {
+  updateoptionattributesvalues = (Optionattributesvaluesid, data) => {
+    return Optionattributesvalues.update(data, {
       where: {
-        id: attrid,
+        id: Optionattributesvaluesid,
       },
     })
       .then(async () => {
-        const result = await this.getoneattributes(attrid);
+        const result = await this.getoneoptionattributesvalues(Optionattributesvaluesid);
         return {
           status: "updated",
           result: result,
@@ -50,8 +50,8 @@ module.exports = class Attr {
         };
       });
   };
-  createattributes = (data) => {
-    return Attributes.create(data)
+  createoptionattributesvalues = (data) => {
+    return Optionattributesvalues.create(data)
       .then((res) => res)
       .catch((err) => {
         err.errors = err.errors.map((error) => {
@@ -63,8 +63,8 @@ module.exports = class Attr {
         return err.errors;
       });
   };
-  delattributes = (deleteid) => {
-    return Attributes.destroy({
+  deloptionattributesvalues = (deleteid) => {
+    return Optionattributesvalues.destroy({
       where: {
         id: deleteid,
       },

@@ -24,6 +24,12 @@ const deliveryRouter = require("./routes/delivery");
 const paymentRouter = require("./routes/payment");
 const statusRouter = require("./routes/statuses");
 const roleRouter = require("./routes/roles");
+const measureRouter = require("./routes/measures");
+const optionAttrValuesRouter = require("./routes/optionattributesvalues");
+const optionsAttrRouter = require("./routes/optionsattr");
+const optionsForGoodsRouter = require("./routes/optionsforgoods");
+const ordersRouter = require("./routes/orders");
+const ordersgoodsRouter = require("./routes/ordersgoods");
 //404 ошибка при обращении к неизвестному пути
 const errorRouter = require("./routes/404error");
 
@@ -42,6 +48,12 @@ app.use("/", deliveryRouter);
 app.use("/", paymentRouter);
 app.use("/", statusRouter);
 app.use("/", roleRouter);
+app.use("/", measureRouter);
+app.use("/", optionAttrValuesRouter);
+app.use("/", optionsAttrRouter);
+app.use("/", optionsForGoodsRouter);
+app.use("/", ordersRouter);
+app.use("/", ordersgoodsRouter);
 app.use("/", errorRouter);
 
 sequelize
