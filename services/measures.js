@@ -1,8 +1,8 @@
-const Attributes = require("../models/attributes");
+const Measure = require("../models/measures");
 
-module.exports = class Attr {
-  getallattributes = async () => {
-    return Attributes.findAll()
+module.exports = class Measureservices {
+  getallmeasure = async () => {
+    return Measure.findAll()
       .then((res) => {
         return {
           status: "success",
@@ -16,19 +16,19 @@ module.exports = class Attr {
         };
       });
   };
-  getoneattributes = (attrid) => {
-    return Attributes.findByPk(attrid)
+  getonemeasure = (measureid) => {
+    return Measure.findByPk(measureid)
       .then((res) => res)
       .catch((err) => err);
   };
-  updateattributes = (attrid, data) => {
-    return Attributes.update(data, {
+  updatemeasure = (measureid, data) => {
+    return Measure.update(data, {
       where: {
-        id: attrid,
+        id: measureid,
       },
     })
       .then(async () => {
-        const result = await this.getoneattributes(attrid);
+        const result = await this.getonemeasure(measureid);
         return {
           status: "updated",
           result: result,
@@ -50,8 +50,8 @@ module.exports = class Attr {
         };
       });
   };
-  createattributes = (data) => {
-    return Attributes.create(data)
+  createmeasure = (data) => {
+    return Measure.create(data)
       .then((res) => res)
       .catch((err) => {
         err.errors = err.errors.map((error) => {
@@ -63,8 +63,8 @@ module.exports = class Attr {
         return err.errors;
       });
   };
-  delattributes = (deleteid) => {
-    return Attributes.destroy({
+  delmeasure = (deleteid) => {
+    return Measure.destroy({
       where: {
         id: deleteid,
       },

@@ -18,6 +18,11 @@ const Image = db.define("image", {
     type: Sequelize.STRING,
     allowNull: true,
   },
+  default: { 
+    type: Sequelize.BOOLEAN, 
+    allowNull: false, 
+    defaultValue: false 
+  },
 });
 
 Products.hasMany(Image);

@@ -1,10 +1,13 @@
 const Sequelize = require("sequelize");
 const db = require("../config/db");
 
-const Optionattributevalues = require("./optionattributevalues");
-const Optionattributes = require("./optionattributes");
+const Optionattributevalues = require("./optionattributesvalues");
+const Optionattributes = require("./optionsattr");
 
-const Optionforgoods = db.define("optionforgoods", {
+const Image=require("./image");
+const Products=require("./products");
+
+const Optionforgoods = db.define("optionsforgoods", {
   id: {
     type: Sequelize.INTEGER,
     autoIncrement: true,
@@ -25,11 +28,11 @@ const Optionforgoods = db.define("optionforgoods", {
 Optionattributevalues.hasMany(Optionforgoods);
 Optionforgoods.belongsTo(Optionattributevalues);
 
-Image.hasMany(Goodsoptions);
-Goodsoptions.belongsTo(Image);
+Image.hasMany(Optionforgoods);
+Optionforgoods.belongsTo(Image);
 
-Products.hasMany(Goodsoptions);
-Goodsoptions.belongsTo(Products);
+Products.hasMany(Optionforgoods);
+Optionforgoods.belongsTo(Products);
 
 Optionattributes.hasMany(Optionforgoods);
 Optionforgoods.belongsTo(Optionattributes);

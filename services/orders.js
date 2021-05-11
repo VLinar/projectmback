@@ -1,8 +1,8 @@
-const Attributes = require("../models/attributes");
+const Orders = require("../models/orders");
 
-module.exports = class Attr {
-  getallattributes = async () => {
-    return Attributes.findAll()
+module.exports = class Ordersservices {
+  getallorders = async () => {
+    return Orders.findAll()
       .then((res) => {
         return {
           status: "success",
@@ -16,19 +16,19 @@ module.exports = class Attr {
         };
       });
   };
-  getoneattributes = (attrid) => {
-    return Attributes.findByPk(attrid)
+  getoneorders = (ordersid) => {
+    return Orders.findByPk(ordersid)
       .then((res) => res)
       .catch((err) => err);
   };
-  updateattributes = (attrid, data) => {
-    return Attributes.update(data, {
+  updateorders = (ordersid, data) => {
+    return Orders.update(data, {
       where: {
-        id: attrid,
+        id: ordersid,
       },
     })
       .then(async () => {
-        const result = await this.getoneattributes(attrid);
+        const result = await this.getoneorders(ordersid);
         return {
           status: "updated",
           result: result,
@@ -50,8 +50,8 @@ module.exports = class Attr {
         };
       });
   };
-  createattributes = (data) => {
-    return Attributes.create(data)
+  createorders = (data) => {
+    return Orders.create(data)
       .then((res) => res)
       .catch((err) => {
         err.errors = err.errors.map((error) => {
@@ -63,8 +63,8 @@ module.exports = class Attr {
         return err.errors;
       });
   };
-  delattributes = (deleteid) => {
-    return Attributes.destroy({
+  delorders = (deleteid) => {
+    return Orders.destroy({
       where: {
         id: deleteid,
       },

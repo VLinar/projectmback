@@ -3,7 +3,7 @@ const db = require("../config/db");
 
 const Optionatributes = require("./optionsattr");
 
-const Optionattributevalues = db.define("optionattributevalues", {
+const Optionattributevalues = db.define("optionattributesvalues", {
   id: {
     type: Sequelize.INTEGER,
     autoIncrement: true,
