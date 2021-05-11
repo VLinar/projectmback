@@ -1,22 +1,22 @@
 const Sequelize = require("sequelize");
 const db = require("../config/db");
 
-const Payment = db.define("payment", {
+const User = require("./users");
+
+const Refresh = db.define("refreshtokens", {
   id: {
     type: Sequelize.INTEGER,
     autoIncrement: true,
     primaryKey: true,
     allowNull: false,
   },
-  name: {
+  refreshtoken: {
     type: Sequelize.STRING,
     allowNull: false,
   },
-  deleted: {
-    type: Sequelize.BOOLEAN,
-    allowNull: false,
-    defaultValue: false,
-  },
 });
 
-module.exports = Payment;
+User.hasMany(Refresh);
+Refresh.belongsTo(User);
+
+module.exports = Refresh;
