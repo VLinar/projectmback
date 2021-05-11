@@ -95,7 +95,7 @@ exports.refresh = async (request, response) => {
                     { id: resp.id, role: resp.roleId },
                     tokenKey,
                     {
-                      expiresIn: "2m",
+                      expiresIn: "60m",
                     }
                   ),
                   refreshtoken: newrefresh,
@@ -120,7 +120,7 @@ exports.guestreg = async (request, response) => {
       return response.status(200).json({
         status: "success",
         token: jwt.sign({ id: res.id, role: res.roleId }, tokenKey, {
-          expiresIn: "2m",
+          expiresIn: "60m",
         }),
         refreshtoken: newrefresh,
       });

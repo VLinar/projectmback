@@ -29,7 +29,7 @@ const errorRouter = require("./routes/404error");
 
 app.use(cors());
 
-app.use(authmiddleware);
+// app.use(authmiddleware);
 
 app.use("/", authRouter);
 app.use("/", userRouter);

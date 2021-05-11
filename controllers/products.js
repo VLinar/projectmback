@@ -11,6 +11,10 @@ exports.products = async function (request, response) {
   );
 };
 
+exports.product = async function (request, response) {
+  response.send(await Products.getoneproduct(request.params.id));
+};
+
 exports.productscount = async function (request, response) {
   response.send(await Products.getproductscount());
 };

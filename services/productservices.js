@@ -56,6 +56,30 @@ module.exports = class Productservices {
         }
       });
   };
+  getoneproduct = (id) => {
+    let oneprodarray = [];
+    return Products.findByPk(id, {
+      include: [
+        { model: Groups },
+        { model: Measures },
+        { model: Images },
+        {
+          model: GoodsAttr,
+          as: "params",
+          attributes: ["attrvalueId", "atributeId"],
+        },
+      ],
+    })
+      .then(async (res) => {
+        oneprodarray.push(res);
+        let result = await this.getAttrGoods(oneprodarray);
+        return {
+          status: "success",
+          result: result,
+        };
+      })
+      .catch((err) => err);
+  };
 
   getproductscount = () => {
     return Products.count()
