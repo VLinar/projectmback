@@ -5,6 +5,10 @@ exports.getallorders = async function (request, response) {
   response.send(await Orders.getallorders());
 };
 
+exports.getallorder = async function (request, response) {
+  response.send(await Orders.getallorder(request.params.id));
+};
+
 exports.getoneorders = async function (request, response) {
   response.send(await Orders.getoneorders(request.params.id));
 };

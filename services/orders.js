@@ -1,4 +1,5 @@
 const Orders = require("../models/orders");
+const Users = require("../models/users");
 
 module.exports = class Ordersservices {
   getallorders = async () => {
@@ -16,11 +17,33 @@ module.exports = class Ordersservices {
         };
       });
   };
+
+  getallorder = (userid) => {
+    return Orders.findAll({
+      where:{
+        userId: userid
+      }
+    })
+      .then((res) => {
+        return {
+          status: "success",
+          response: res,
+        };
+    })
+      .catch((err) => {
+        return {
+          status: "error",
+          error_text: err,
+        };
+    });
+  };
+
   getoneorders = (ordersid) => {
     return Orders.findByPk(ordersid)
       .then((res) => res)
       .catch((err) => err);
   };
+
   updateorders = (ordersid, data) => {
     return Orders.update(data, {
       where: {
