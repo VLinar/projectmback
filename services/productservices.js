@@ -1,13 +1,42 @@
+const Sequelize = require('sequelize');
+const Op = Sequelize.Op;
+
 const Products = require("../models/products.js");
 const Measures = require("../models/measures");
 const Groups = require("../models/goodgroups.js");
 
 const GoodsAttr = require("../models/goodsattr");
+const Optionsforgoods = require("../models/optionsforgoods");
 const Attributes = require("../models/attributes");
 const Images = require("../models/image");
 const Attributesvalue = require("../models/attributesvalues");
+const Optionsattr = require("../models/optionsattr");
+const Optionattributesvalue = require("../models/optionattributesvalues");
 
 module.exports = class Productservices {
+
+  search  = (text) => {
+    return Products.findAll({
+      where:{
+        name: {
+          [Op.like]: `%${text}%`
+        }
+      }
+    })
+    .then((res) => {
+      return {
+        status: "success",
+        response: res,
+      };
+    })
+    .catch((err) => {
+      return {
+        status: "error",
+        error_text: err,
+      };
+    });
+  };
+  
   getallproducts = (limits, pages, order_by) => {
     if (!limits) {
       limits = 250;
@@ -35,6 +64,11 @@ module.exports = class Productservices {
           as: "params",
           attributes: ["attrvalueId", "atributeId"],
         },
+        // {
+        //   model: Optionsforgoods,
+        //   as: "params",
+        //   attributes: ["optionattributesvalueId", "optionatributeId"],
+        // },
       ],
       order: [["name", order_by]],
       offset: startIndex,
@@ -56,6 +90,64 @@ module.exports = class Productservices {
         }
       });
   };
+
+  getallproductsid = (limits, pages, order_by, groupsid) => {
+    if (!limits) {
+      limits = 250;
+    }
+    if (!pages) {
+      pages = 1;
+    }
+    if (!order_by) {
+      order_by = "ASC";
+    }
+
+    const page = parseInt(pages);
+    const limit = parseInt(limits);
+
+    const startIndex = (page - 1) * limit;
+    const endIndex = page * limit;
+
+    return Products.findAll({
+      include: [
+        { model: Groups },
+        { model: Measures },
+        { model: Images },
+        {
+          model: GoodsAttr,
+          as: "params",
+          attributes: ["attrvalueId", "atributeId"],
+        },
+        // {
+        //   model: Optionsforgoods,
+        //   as: "params",
+        //   attributes: ["optionattributesvalueId", "optionatributeId"],
+        // },
+      ],
+      order: [["name", order_by]],
+      offset: startIndex,
+      limit: endIndex,
+      where:{
+        groupId: groupsid
+      }
+    })
+      .then(async (res) => {
+        let result = await this.getAttrGoods(res);
+        return {
+          status: "success",
+          result: result,
+        };
+      })
+      .catch((err) => {
+        if (err.parent.code === "42703") {
+          return {
+            status: err.parent.routine,
+            error: "Поле(я) содержат некорректные значения",
+          };
+        }
+      });
+  };
+
   getoneproduct = (id) => {
     let oneprodarray = [];
     return Products.findByPk(id, {
@@ -68,6 +160,11 @@ module.exports = class Productservices {
           as: "params",
           attributes: ["attrvalueId", "atributeId"],
         },
+        // {
+        //   model: Optionsforgoods,
+        //   as: "params",
+        //   attributes: ["optionattributesvalueId", "optionatributeId"],
+        // },
       ],
     })
       .then(async (res) => {
