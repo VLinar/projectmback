@@ -36,6 +36,7 @@ module.exports = class Userservices {
         };
       })
       .catch((err) => {
+        console.log(err);
         err.errors = err.errors.map((error) => {
           return {
             type: error.type,
