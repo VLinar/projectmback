@@ -25,6 +25,23 @@ const Orders = db.define("orders", {
     type: Sequelize.DOUBLE,
     allowNull: true,
   },
+  delivery_address: {
+    type: Sequelize.STRING,
+    allowNull: true,
+  },
+  phone_contact_inform_id: {
+    type: Sequelize.STRING,
+    allowNull: true,
+  },
+  email_contact_inform_id: {
+    type: Sequelize.STRING,
+    allowNull: true,
+    validate: {
+      isEmail: {
+        msg: "Не валидное значение поля email",
+      },
+    },
+  },
   paid: {
     type: Sequelize.BOOLEAN,
     allowNull: false,
