@@ -42,7 +42,7 @@ const Orders = db.define("orders", {
       },
     },
   },
-  paid: {
+  pay: {
     type: Sequelize.BOOLEAN,
     allowNull: false,
     defaultValue: false,

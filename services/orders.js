@@ -20,22 +20,22 @@ module.exports = class Ordersservices {
 
   getallorder = (userid) => {
     return Orders.findAll({
-      where:{
-        userId: userid
-      }
+      where: {
+        userId: userid,
+      },
     })
       .then((res) => {
         return {
           status: "success",
           response: res,
         };
-    })
+      })
       .catch((err) => {
         return {
           status: "error",
           error_text: err,
         };
-    });
+      });
   };
 
   getoneorders = (ordersid) => {
@@ -77,6 +77,7 @@ module.exports = class Ordersservices {
     return Orders.create(data)
       .then((res) => res)
       .catch((err) => {
+        console.log(err);
         err.errors = err.errors.map((error) => {
           return {
             type: error.type,
