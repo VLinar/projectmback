@@ -27,7 +27,7 @@ exports.productsid = async function (request, response) {
 };
 
 exports.productscount = async function (request, response) {
-  response.send(await Products.getproductscount());
+  response.send(await Products.getproductscount(request.params.id));
 };
 
 exports.searc = async function (request, response) {

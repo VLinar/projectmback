@@ -1,4 +1,5 @@
 const Ordersgoods = require("../models/ordersgoods");
+const Products = require("../models/products.js");
 
 module.exports = class Ordersgoodsservices {
   getallordersgoods = async () => {
@@ -21,6 +22,17 @@ module.exports = class Ordersgoodsservices {
       .then((res) => res)
       .catch((err) => err);
   };
+  getordergoodsonorderid = (orderid) => {
+    return Ordersgoods.findAll({
+      where: {
+        orderId: orderid,
+      },
+      include: [{ model: Products }],
+    })
+      .then((res) => res)
+      .catch((err) => err);
+  };
+
   updateordersgoods = (ordersgoodsid, data) => {
     return Ordersgoods.update(data, {
       where: {

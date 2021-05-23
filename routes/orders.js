@@ -4,7 +4,7 @@ const ordersRouter = express.Router();
 
 ordersRouter.get("/orders", Orders.getallorders);
 
-ordersRouter.get("/ordersid/:id", Orders.getallorder);
+ordersRouter.get("/myorders/:id", Orders.getallorder);
 
 ordersRouter.get("/orders/:id", Orders.getoneorders);
 

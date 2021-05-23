@@ -1,5 +1,9 @@
 const Orders = require("../models/orders");
-const Users = require("../models/users");
+const Payment = require("../models/payment");
+const Statuses = require("../models/statuses");
+const Ordersgoodsservices = require("./ordersgoods");
+
+const Ordergoods = new Ordersgoodsservices();
 
 module.exports = class Ordersservices {
   getallorders = async () => {
@@ -23,12 +27,17 @@ module.exports = class Ordersservices {
       where: {
         userId: userid,
       },
+      include: [{ model: Statuses }, { model: Payment }],
     })
       .then((res) => {
-        return {
-          status: "success",
-          response: res,
-        };
+        return Promise.all(
+          res.map(async (e) => {
+            await Ordergoods.getordergoodsonorderid(e.id).then((resp) => {
+              e.setDataValue("products", resp);
+            });
+            return e;
+          })
+        );
       })
       .catch((err) => {
         return {
@@ -77,7 +86,6 @@ module.exports = class Ordersservices {
     return Orders.create(data)
       .then((res) => res)
       .catch((err) => {
-        console.log(err);
         err.errors = err.errors.map((error) => {
           return {
             type: error.type,

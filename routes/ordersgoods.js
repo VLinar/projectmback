@@ -4,6 +4,7 @@ const ordersgoodsRouter = express.Router();
 
 ordersgoodsRouter.get("/ordersgoods", Ordersgoods.getallordersgoods);
 ordersgoodsRouter.get("/ordersgoods/:id", Ordersgoods.getoneordersgoods);
+ordersgoodsRouter.get("/ordersgoodsid/:id", Ordersgoods.getgoodsfororders);
 
 ordersgoodsRouter.put("/ordersgoods/:id", Ordersgoods.updateordersgoods);
 

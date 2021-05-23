@@ -9,8 +9,13 @@ exports.getoneordersgoods = async function (request, response) {
   response.send(await Ordersgoods.getoneordersgoods(request.params.id));
 };
 
+exports.getgoodsfororders = async (req, res) => {
+  res.send(await Ordersgoods.getordergoodsonorderid(req.params.id));
+};
 exports.updateordersgoods = async function (request, response) {
-  response.send(await Ordersgoods.updateordersgoods(request.params.id, request.body));
+  response.send(
+    await Ordersgoods.updateordersgoods(request.params.id, request.body)
+  );
 };
 
 exports.createordersgoods = async function (request, response) {

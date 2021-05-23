@@ -1,4 +1,4 @@
-const Sequelize = require('sequelize');
+const Sequelize = require("sequelize");
 const Op = Sequelize.Op;
 
 const Products = require("../models/products.js");
@@ -14,29 +14,28 @@ const Optionsattr = require("../models/optionsattr");
 const Optionattributesvalue = require("../models/optionattributesvalues");
 
 module.exports = class Productservices {
-
-  search  = (text) => {
+  search = (text) => {
     return Products.findAll({
-      where:{
+      where: {
         name: {
-          [Op.like]: `%${text}%`
-        }
-      }
+          [Op.like]: `%${text}%`,
+        },
+      },
     })
-    .then((res) => {
-      return {
-        status: "success",
-        response: res,
-      };
-    })
-    .catch((err) => {
-      return {
-        status: "error",
-        error_text: err,
-      };
-    });
+      .then((res) => {
+        return {
+          status: "success",
+          response: res,
+        };
+      })
+      .catch((err) => {
+        return {
+          status: "error",
+          error_text: err,
+        };
+      });
   };
-  
+
   getallproducts = (limits, pages, order_by) => {
     if (!limits) {
       limits = 250;
@@ -92,6 +91,7 @@ module.exports = class Productservices {
   };
 
   getallproductsid = (limits, pages, order_by, groupsid) => {
+    console.log(limits, pages);
     if (!limits) {
       limits = 250;
     }
@@ -106,7 +106,8 @@ module.exports = class Productservices {
     const limit = parseInt(limits);
 
     const startIndex = (page - 1) * limit;
-    const endIndex = page * limit;
+
+    console.log(startIndex);
 
     return Products.findAll({
       include: [
@@ -126,10 +127,10 @@ module.exports = class Productservices {
       ],
       order: [["name", order_by]],
       offset: startIndex,
-      limit: endIndex,
-      where:{
-        groupId: groupsid
-      }
+      limit: limit,
+      where: {
+        groupId: groupsid,
+      },
     })
       .then(async (res) => {
         let result = await this.getAttrGoods(res);
@@ -178,8 +179,12 @@ module.exports = class Productservices {
       .catch((err) => err);
   };
 
-  getproductscount = () => {
-    return Products.count()
+  getproductscount = (id) => {
+    return Products.count({
+      where: {
+        groupId: id,
+      },
+    })
       .then((res) => {
         return {
           status: "success",
