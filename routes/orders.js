@@ -3,6 +3,9 @@ const Orders = require("../controllers/orders");
 const ordersRouter = express.Router();
 
 ordersRouter.get("/orders", Orders.getallorders);
+
+ordersRouter.get("/myorders/:id", Orders.getallorder);
+
 ordersRouter.get("/orders/:id", Orders.getoneorders);
 
 ordersRouter.put("/orders/:id", Orders.updateorders);

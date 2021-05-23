@@ -1,4 +1,9 @@
 const Orders = require("../models/orders");
+const Payment = require("../models/payment");
+const Statuses = require("../models/statuses");
+const Ordersgoodsservices = require("./ordersgoods");
+
+const Ordergoods = new Ordersgoodsservices();
 
 module.exports = class Ordersservices {
   getallorders = async () => {
@@ -16,11 +21,38 @@ module.exports = class Ordersservices {
         };
       });
   };
+
+  getallorder = (userid) => {
+    return Orders.findAll({
+      where: {
+        userId: userid,
+      },
+      include: [{ model: Statuses }, { model: Payment }],
+    })
+      .then((res) => {
+        return Promise.all(
+          res.map(async (e) => {
+            await Ordergoods.getordergoodsonorderid(e.id).then((resp) => {
+              e.setDataValue("products", resp);
+            });
+            return e;
+          })
+        );
+      })
+      .catch((err) => {
+        return {
+          status: "error",
+          error_text: err,
+        };
+      });
+  };
+
   getoneorders = (ordersid) => {
     return Orders.findByPk(ordersid)
       .then((res) => res)
       .catch((err) => err);
   };
+
   updateorders = (ordersid, data) => {
     return Orders.update(data, {
       where: {

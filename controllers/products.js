@@ -15,6 +15,21 @@ exports.product = async function (request, response) {
   response.send(await Products.getoneproduct(request.params.id));
 };
 
+exports.productsid = async function (request, response) {
+  response.send(
+    await Products.getallproductsid(
+      request.query.limit,
+      request.query.page,
+      request.query.order_by,
+      request.params.id
+    )
+  );
+};
+
 exports.productscount = async function (request, response) {
-  response.send(await Products.getproductscount());
+  response.send(await Products.getproductscount(request.params.id));
+};
+
+exports.searc = async function (request, response) {
+  response.send(await Products.search(request.query.text));
 };
