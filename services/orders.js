@@ -1,6 +1,7 @@
 const Orders = require("../models/orders");
 const Payment = require("../models/payment");
 const Statuses = require("../models/statuses");
+const User = require("../models/users");
 const Ordersgoodsservices = require("./ordersgoods");
 
 const Ordergoods = new Ordersgoodsservices();
@@ -48,8 +49,18 @@ module.exports = class Ordersservices {
   };
 
   getoneorders = (ordersid) => {
-    return Orders.findByPk(ordersid)
-      .then((res) => res)
+    return Orders.findOne({
+      where: {
+        id: ordersid,
+      },
+      include: [{ model: Statuses }, { model: Payment }, { model: User }],
+    })
+      .then(async (res) => {
+        await Ordergoods.getordergoodsonorderid(res.id).then((resp) => {
+          res.setDataValue("products", resp);
+        });
+        return res;
+      })
       .catch((err) => err);
   };
 

@@ -30,6 +30,7 @@ const optionsAttrRouter = require("./routes/optionsattr");
 const optionsForGoodsRouter = require("./routes/optionsforgoods");
 const ordersRouter = require("./routes/orders");
 const ordersgoodsRouter = require("./routes/ordersgoods");
+const ordermail = require("./routes/ordermail");
 //404 ошибка при обращении к неизвестному пути
 const errorRouter = require("./routes/404error");
 
@@ -54,6 +55,8 @@ app.use("/", optionsAttrRouter);
 app.use("/", optionsForGoodsRouter);
 app.use("/", ordersRouter);
 app.use("/", ordersgoodsRouter);
+app.use("/", ordermail);
+
 app.use("/", errorRouter);
 
 sequelize
