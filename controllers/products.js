@@ -26,10 +26,26 @@ exports.productsid = async function (request, response) {
   );
 };
 
+exports.allproductscount = async function (request, response) {
+  response.send(await Products.getallproductscount());
+};
+
 exports.productscount = async function (request, response) {
   response.send(await Products.getproductscount(request.params.id));
 };
 
 exports.searc = async function (request, response) {
   response.send(await Products.search(request.query.text));
+};
+
+exports.createprod = async function (request, response) {
+  response.send(await Products.createproduct(request.body));
+};
+
+exports.updateproduct = async function (request, response) {
+  response.send(await Products.updateproduct(request.params.id, request.body));
+};
+
+exports.delproduct = async function (request, response) {
+  response.send(await Products.delproducts(request.params.id));
 };

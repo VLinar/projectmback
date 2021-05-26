@@ -15,6 +15,12 @@ const Optionattributesvalue = require("../models/optionattributesvalues");
 
 module.exports = class Productservices {
   search = (text) => {
+    if (!text) {
+      return {
+        status: "success",
+        response: [],
+      };
+    }
     return Products.findAll({
       where: {
         name: {
@@ -51,7 +57,6 @@ module.exports = class Productservices {
     const limit = parseInt(limits);
 
     const startIndex = (page - 1) * limit;
-    const endIndex = page * limit;
 
     return Products.findAll({
       include: [
@@ -71,7 +76,7 @@ module.exports = class Productservices {
       ],
       order: [["name", order_by]],
       offset: startIndex,
-      limit: endIndex,
+      limit: limits,
     })
       .then(async (res) => {
         let result = await this.getAttrGoods(res);
@@ -190,6 +195,49 @@ module.exports = class Productservices {
           status: "success",
           count: res,
         };
+      })
+      .catch((err) => err);
+  };
+
+  getallproductscount = () => {
+    return Products.count()
+      .then((res) => {
+        return {
+          status: "success",
+          count: res,
+        };
+      })
+      .catch((err) => err);
+  };
+
+  createproduct = (data) => {
+    return Products.create(data)
+      .then((res) => res)
+      .catch((err) => err);
+  };
+
+  updateproduct = (prodid, data) => {
+    return Products.update(data, {
+      where: {
+        id: prodid,
+      },
+    })
+      .then((res) => res)
+      .catch((err) => err);
+  };
+
+  delproducts = (deleteid) => {
+    return Products.destroy({
+      where: {
+        id: deleteid,
+      },
+    })
+      .then((res) => {
+        return res != 0
+          ? {
+              status: "deleted",
+            }
+          : { status: "error", message: "элемент не найден" };
       })
       .catch((err) => err);
   };
